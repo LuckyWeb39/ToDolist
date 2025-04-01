@@ -17,3 +17,16 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+li > button {
+  cursor: pointer;
+  background: none;
+  color: red;
+  font-weight: bold;
+  margin-right: 5px;
+  border: none;
+}
+li > span {
+  display: inline-block;
+  margin-right: 3px;
+}

@@ -1,4 +1,5 @@
 import {Button} from "./Button.tsx";
+import {FilterValues} from "./App.tsx";
 
 export type TaskType = {
     id: number
@@ -10,9 +11,11 @@ type TodoListPropsType = {
     title: string
     tasks: TaskType[]
     date?: string
+    deleteTask: (id: number) => void
+    StatusFiltered: (status:FilterValues) => void
 }
 
-export const ToDoList = ({title, tasks, date}:TodoListPropsType) =>{
+export const ToDoList = ({title, tasks, date,deleteTask, StatusFiltered}:TodoListPropsType) =>{
     return (
         <div>
             <h3>{title}</h3>
@@ -28,6 +31,7 @@ export const ToDoList = ({title, tasks, date}:TodoListPropsType) =>{
                             <li key={task.id}>
                                 <input type="checkbox" checked={task.isComplete}/>
                                 <span>{task.title}</span>
+                                <Button title={"X"} onClick={()=>deleteTask(task.id)}/>
                             </li>
                         )
 
@@ -35,9 +39,9 @@ export const ToDoList = ({title, tasks, date}:TodoListPropsType) =>{
                 </ul>)}
 
             <div>
-                <Button title={"All"}/>
-                <Button title={"Active"}/>
-                <Button title={"Completed"}/>
+                <Button title={"All"} onClick={()=>StatusFiltered('All')}/>
+                <Button title={"Active"} onClick={()=>StatusFiltered('Active')}/>
+                <Button title={"Completed"} onClick={()=>StatusFiltered('Completed')}/>
             </div>
             <div>{date}</div>
         </div>
