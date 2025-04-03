@@ -12,10 +12,12 @@ type TodoListPropsType = {
     tasks: TaskType[]
     date?: string
     deleteTask: (id: number) => void
+    deletedAllTasks: () => void
     StatusFiltered: (status:FilterValues) => void
+    threeTasks: ()=> void
 }
 
-export const ToDoList = ({title, tasks, date,deleteTask, StatusFiltered}:TodoListPropsType) =>{
+export const ToDoList = ({title, tasks, date,deleteTask,deletedAllTasks,StatusFiltered,threeTasks}:TodoListPropsType) =>{
     return (
         <div>
             <h3>{title}</h3>
@@ -42,6 +44,8 @@ export const ToDoList = ({title, tasks, date,deleteTask, StatusFiltered}:TodoLis
                 <Button title={"All"} onClick={()=>StatusFiltered('All')}/>
                 <Button title={"Active"} onClick={()=>StatusFiltered('Active')}/>
                 <Button title={"Completed"} onClick={()=>StatusFiltered('Completed')}/>
+                <Button title={'First 3-th tasks'} onClick={()=>threeTasks()}/>
+                <Button title={'Delete all'} onClick={()=>deletedAllTasks()}/>
             </div>
             <div>{date}</div>
         </div>

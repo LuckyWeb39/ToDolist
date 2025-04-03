@@ -9,9 +9,11 @@ export type FilterValues = 'All' | 'Completed' | 'Active';
 function App() {
 
    let [tasks, setTask]= useState<TaskType[]>([
-       {id: 1, title: "HTML&CSS", isComplete: true},
+       {id: 1, title: "HTML5", isComplete: true},
        {id: 2, title: "JS", isComplete: true},
-       {id: 3, title: "React", isComplete: false},
+       {id: 3, title: "CSS", isComplete: true},
+       {id: 4, title: "React", isComplete: false},
+       {id: 5, title: "Redux", isComplete: false},
    ])
 
     let [filter, setFilter] = useState<FilterValues>('All');
@@ -30,11 +32,21 @@ function App() {
         setTask(deletedTasks);
     }
 
+    const deletedAllTasks = () => {
+        setTask([])
+    }
+
+    const threeTasks = () => {
+        setTask(tasks.slice(0,3))
+    }
+
   return (
       <div className="app">
         <ToDoList title={"What to learn"}
                   tasks={FilteredTasks}
                   deleteTask={deleteTask}
+                  deletedAllTasks={deletedAllTasks}
+                  threeTasks={threeTasks}
                   StatusFiltered={StatusFiltered}/>
       </div>
   )
