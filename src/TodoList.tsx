@@ -1,5 +1,5 @@
 import {Button} from "./Button.tsx";
-import {FilterValues} from "./App.tsx";
+import {useState} from "react";
 
 export type TaskType = {
     id: number
@@ -7,17 +7,41 @@ export type TaskType = {
     isComplete: boolean
 }
 
+export type FilterValues = 'All' | 'Completed' | 'Active';
+
 type TodoListPropsType = {
     title: string
     tasks: TaskType[]
     date?: string
-    deleteTask: (id: number) => void
-    deletedAllTasks: () => void
-    StatusFiltered: (status:FilterValues) => void
-    threeTasks: ()=> void
 }
 
-export const ToDoList = ({title, tasks, date,deleteTask,deletedAllTasks,StatusFiltered,threeTasks}:TodoListPropsType) =>{
+export const ToDoList = ({title, tasks, date}:TodoListPropsType) =>{
+
+    let [FilteredTasks, setFilteredTasks] = useState(tasks)
+
+    let [filter, setFilter] = useState<FilterValues>('All');
+
+    const StatusFiltered = (status: FilterValues) => {
+        setFilter(status);
+    }
+
+    if (filter === 'Active') {FilteredTasks = tasks.filter(task => !task.isComplete)}
+    if (filter === 'Completed') {FilteredTasks = tasks.filter(task => task.isComplete)}
+
+    const deleteTask = (id: number) => {
+        const deletedTasks = FilteredTasks.filter(task => task.id !== id)
+        setFilteredTasks(deletedTasks);
+    }
+    const threeTasks = () => {
+        setFilteredTasks(tasks.slice(0,3))
+    }
+
+    const deletedAllTasks = () => {
+        setFilteredTasks([])
+    }
+
+
+
     return (
         <div>
             <h3>{title}</h3>
@@ -25,10 +49,10 @@ export const ToDoList = ({title, tasks, date,deleteTask,deletedAllTasks,StatusFi
                 <input/>
                 <Button title={"+"}/>
             </div>
-            {tasks.length === 0 ? (
+            {FilteredTasks.length === 0 ? (
                 <p>No tasks</p>
             ): (<ul>
-                {tasks.map (task => {
+                {FilteredTasks.map (task => {
                         return (
                             <li key={task.id}>
                                 <input type="checkbox" checked={task.isComplete}/>
