@@ -48,29 +48,33 @@ export const ToDoList = ({title, tasks, date}: TodoListPropsType) => {
     let [inputValue, setInputValue] = useState('')
 
     const AddNewTask = () => {
-        let newTask = {id: v1(), title: inputValue, isComplete: false}
-        setFilteredTasks([newTask, ...FilteredTasks])
-        setInputValue('')
+            let newTask = {id: v1(), title: inputValue, isComplete: false}
+            setFilteredTasks([newTask, ...FilteredTasks])
+            setInputValue('')
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value)
+
     }
     const onKeyUpHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        debugger
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && inputValue.length < 10 && inputValue) {
             setInputValue(e.currentTarget.value)
             AddNewTask()
         }
     }
+
+    const isAddBtnConditions = !inputValue || inputValue.length > 10
 
 
     return (
         <div>
             <h3>{title}</h3>
             <div>
-                <input value={inputValue} onChange={onChangeHandler} onKeyUp={onKeyUpHandler}/>
-                <Button title={"+"} onClick={AddNewTask}/>
+                <input  placeholder={'Add title task'} value={inputValue} onChange={onChangeHandler} onKeyUp={onKeyUpHandler}/>
+                <Button title={"+"} onClick={AddNewTask} disabled={isAddBtnConditions}/>
+
+                {inputValue && <div style={{color:'red', fontSize: '10px'}}>Task title length should be 10 symbols max</div>}
             </div>
             {FilteredTasks.length === 0 ? (
                 <p>No tasks</p>
