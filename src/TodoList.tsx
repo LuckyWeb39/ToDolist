@@ -1,6 +1,7 @@
 import {Button} from "./Button.tsx";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 import {v1} from "uuid";
+import {useAutoAnimate} from "@formkit/auto-animate/react";
 
 export type TaskType = {
     id: string
@@ -40,6 +41,7 @@ export const ToDoList = ({title, tasks, date}: TodoListPropsType) => {
     const threeTasks = () => {
         setFilteredTasks(tasks.slice(0, 3))
     }
+    const [listRef] = useAutoAnimate<HTMLUListElement>()
 
     const deletedAllTasks = () => {
         setFilteredTasks([])
@@ -78,7 +80,7 @@ export const ToDoList = ({title, tasks, date}: TodoListPropsType) => {
             </div>
             {FilteredTasks.length === 0 ? (
                 <p>No tasks</p>
-            ) : (<ul>
+            ) : (<ul ref={listRef}>
                 {FilteredTasks.map(task => {
 
                     const onClickHandler = () => deleteTask(task.id)
