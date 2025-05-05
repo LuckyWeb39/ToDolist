@@ -7,11 +7,17 @@
   margin-right: 50px;
 }
 
+.container {
+  display: flex;
+  align-items: center;
+}
+
 .error {
   border: red 1px solid;
 }
 
 .error-message {
+  margin-top: 10px;
   color: red;
 }
 
@@ -21,4 +27,11 @@
 
 .is-done {
   opacity: 0.5;
+}
+
+.item-form{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
