@@ -1,10 +1,12 @@
 .app {
-  padding: 30px;
-  display: flex;
+
 }
 
 .app > div {
-  margin-right: 50px;
+
+}
+h2{
+  text-align: center;
 }
 
 .container {
