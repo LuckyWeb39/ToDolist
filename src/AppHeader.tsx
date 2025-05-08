@@ -1,29 +1,34 @@
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import {NavButton} from "./Todolist.styled.ts";
+import {Switch} from "@mui/material";
 
-export const ButtonAppBar = () => {
+type Props ={
+    ChangeThemeMode: ()=>void,
+}
+
+export const ButtonAppBar = ({ChangeThemeMode}: Props) => {
     return (
-        <Box sx={{ flexGrow: 1, paddingBottom: '80px' }}>
+        <Box sx={{flexGrow: 1, paddingBottom: '80px'}}>
             <AppBar position="fixed">
-                <Toolbar>
+                <Toolbar sx={{display: 'flex', justifyContent: 'space-between'}}>
                     <IconButton
                         size="large"
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        sx={{ mr: 2 }}
+                        sx={{mr: 2}}
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
-                    {/*<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>*/}
-                    {/*    Log in*/}
-                    {/*</Typography>*/}
-                    <Button color="inherit">Login</Button>
+                    <div>
+                        <NavButton>Log In</NavButton>
+                        <NavButton>Log Out</NavButton>
+                        <Switch onChange={ChangeThemeMode}/>
+                    </div>
                 </Toolbar>
             </AppBar>
         </Box>

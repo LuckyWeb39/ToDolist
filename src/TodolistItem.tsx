@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Checkbox from '@mui/material/Checkbox';
+import Box from "@mui/material/Box";
 
 type Props = {
     todolist: Todolist
@@ -110,7 +111,7 @@ export const TodolistItem = (props: Props) => {
                     })}
                 </List>
             )}
-            <div>
+            <Box sx={{display: 'flex', justifyContent:'space-around'}}>
                 <Button variant={filter === 'all' ? 'contained' : 'text'}
                     // className={filter === 'all' ? 'active-filter' : ''}
                     // title={'All'}
@@ -123,7 +124,7 @@ export const TodolistItem = (props: Props) => {
                     // className={filter === 'completed' ? 'active-filter' : ''}
                     // title={'Completed'}
                         onClick={() => changeFilterHandler('completed')}>Completed</Button>
-            </div>
+            </Box>
         </div>
     )
 }
