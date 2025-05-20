@@ -1,5 +1,6 @@
-import {TasksState} from "../App.tsx";
+import {TasksState} from "../app/App.tsx";
 import {v1} from "uuid";
+// import {todolistId1, todolistId2, todolistId3} from "./TodolistReducer.ts";
 
 
 type TasksActionType =
@@ -10,7 +11,25 @@ type TasksActionType =
     deleteTodolistTasksActionType |
     createTasksForNewTodolistActionType
 
-export const TasksReducer = (state: TasksState, action: TasksActionType): TasksState => {
+const initialState: TasksState = {
+    // [todolistId1]: [
+    //     {id: v1(), title: 'HTML&CSS', isDone: true},
+    //     {id: v1(), title: 'JS', isDone: true},
+    //     {id: v1(), title: 'ReactJS', isDone: false},
+    // ],
+    // [todolistId2]: [
+    //     {id: v1(), title: 'Beer', isDone: true},
+    //     {id: v1(), title: 'Meet', isDone: true},
+    //     {id: v1(), title: 'Bread', isDone: false},
+    // ],
+    // [todolistId3]: [
+    //     {id: v1(), title: 'Dota', isDone: false},
+    //     {id: v1(), title: 'CS', isDone: false},
+    //     {id: v1(), title: 'Dendi', isDone: true},
+    // ],
+}
+
+export const tasksReducer = (state: TasksState = initialState, action: TasksActionType): TasksState => {
     switch (action.type) {
         case "DELETE_TASK": {
             const {todolistId, taskId} = action.payload

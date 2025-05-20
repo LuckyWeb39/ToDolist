@@ -1,5 +1,5 @@
 import {type ChangeEvent} from 'react'
-import type {FilterValues, Task, Todolist} from './App'
+import type {FilterValues, Task, Todolist} from './app/App.tsx'
 import DeleteIcon from '@mui/icons-material/Delete';
 import {CreateItemForm} from "./CreateItemForm.tsx";
 import {EditableSpan} from "./EditableSpan.tsx";

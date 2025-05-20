@@ -1,6 +1,16 @@
-import {FilterValues, Todolist} from "../App.tsx";
+import {FilterValues, Todolist} from "../app/App.tsx";
+// import {v1} from "uuid";
 
-const initialState: Todolist[] = []
+
+// export const todolistId1 = v1()
+// export const todolistId2 = v1()
+// export const todolistId3 = v1()
+
+const initialState: Todolist[] = [
+    // {id: todolistId1, title: 'What to learn', filter: 'all'},
+    // {id: todolistId2, title: 'What to buy', filter: 'all'},
+    // {id: todolistId3, title: 'What to play', filter: 'all'},
+]
 
 export type DeleteTodolistActionType = {
     type: 'DELETE',
@@ -32,7 +42,9 @@ export type ChangeTitleActionType = {
 
 type  ActionsType = DeleteTodolistActionType | createTodolistActionType | changeFilterActionType | ChangeTitleActionType
 
-export const todolistsReducer = (state = initialState, action: ActionsType): Todolist[] => {
+
+
+export const todolistsReducer = (state:Todolist[] = initialState, action: ActionsType): Todolist[] => {
     switch (action.type) {
 
         case 'DELETE': {
@@ -53,9 +65,7 @@ export const todolistsReducer = (state = initialState, action: ActionsType): Tod
            return state.map(t => t.id === todolistId ? {...t, title} : t)
         }
 
-        default: {
-            return state
-        }
+        default: return state
     }
 }
 

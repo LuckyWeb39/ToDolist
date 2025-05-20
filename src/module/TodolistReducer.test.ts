@@ -1,4 +1,4 @@
-import {Todolist} from "../App.tsx";
+import {Todolist} from "../app/App.tsx";
 import {beforeEach, test, expect} from "vitest";
 import {v1} from "uuid";
 import {
@@ -36,7 +36,7 @@ test('todolist should be deleted', () => {
 
 test('create new todo list', () => {
 
-    const endState = todolistsReducer(startState,createTodolistAC('New Todolist'))
+    const endState = todolistsReducer(startState,createTodolistAC('New Todolist', todolistId1))
 
     expect(endState.length).toBe(4)
     expect(endState[0].title).toBe('What to learn')
