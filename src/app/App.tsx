@@ -8,10 +8,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import {Container, CssBaseline, Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {
-    changeFilterAC,
-    ChangeTitleAC,
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
     createTodolistAC,
-    DeleteTodolistAC,
+    deleteTodolistAC,
 } from "../model/TodolistReducer.ts";
 import {
     changeTaskStatusAC, changeTaskTitleAC,
@@ -55,35 +55,35 @@ export const App = () => {
 
 
     const changeFilter = (todolistId: string, filter: FilterValues) => {
-        dispatch(changeFilterAC(todolistId,filter))
+        dispatch(changeTodolistFilterAC({todolistId, filter}))
     }
 
     const deleteTodolist = (todolistId: string) => {
-        dispatch(DeleteTodolistAC(todolistId))
+        dispatch(deleteTodolistAC({id:todolistId}))
     }
 
     const createTodolist = (title: string) => {
         dispatch(createTodolistAC(title))
     }
 
-    const changeTodolistTitle = (todolistID: string, title: string) => {
-        dispatch(ChangeTitleAC(todolistID,title))
+    const changeTodolistTitle = (todolistId: string, title: string) => {
+        dispatch(changeTodolistTitleAC({todolistId, title}))
     }
 
     const deleteTask = (todolistId: string, taskId: string) => {
-        dispatch(deleteTaskAC(todolistId,taskId))
+        dispatch(deleteTaskAC({todolistId, taskId}))
     }
 
     const createTask = (todolistId: string, title: string) => {
-        dispatch(createTaskAC(todolistId, title))
+        dispatch(createTaskAC({todolistId, title}))
     }
 
     const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-        dispatch(changeTaskStatusAC(todolistId,taskId,isDone))
+        dispatch(changeTaskStatusAC({todolistId, taskId, isDone}))
     }
 
     const changeTaskTitle = (todolistID: string, taskID: string, title: string) => {
-        dispatch(changeTaskTitleAC(todolistID,taskID,title))
+        dispatch(changeTaskTitleAC({todolistID, taskID, title}))
     }
 
     const ChangeThemeMode = () => {
