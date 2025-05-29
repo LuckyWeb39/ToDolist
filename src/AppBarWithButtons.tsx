@@ -10,7 +10,7 @@ type Props ={
     ChangeThemeMode: ()=>void,
 }
 
-export const ButtonAppBar = ({ChangeThemeMode}: Props) => {
+export const AppBarWithButtons = ({ChangeThemeMode}: Props) => {
     return (
         <Box sx={{flexGrow: 1, paddingBottom: '80px'}}>
             <AppBar position="fixed">

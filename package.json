@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@formkit/auto-animate": "^0.8.2",
+    "@types/node": "^22.15.24",
     "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
     "@vitejs/plugin-react-swc": "3.7.2",
