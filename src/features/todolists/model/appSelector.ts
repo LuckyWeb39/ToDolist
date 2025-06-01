@@ -1,4 +1,4 @@
-import {RootState} from "../app/store.ts";
+import {RootState} from "../../../app/store.ts";
 import {ThemeValue} from "./appReducer.ts";
 
 

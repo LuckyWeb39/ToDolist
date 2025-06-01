@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {NavButton} from "./Todolist.styled.ts";
 import {Switch} from "@mui/material";
+import {NavButton} from "@/common/components/appBarWithButtons/appBarWithButtons.styled.ts";
 
 type Props ={
     ChangeThemeMode: ()=>void,

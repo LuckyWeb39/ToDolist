@@ -1,10 +1,10 @@
 import {Grid} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import {CreateItemForm} from "@/CreateItemForm.tsx";
+import {CreateItemForm} from "@/common/components/createItemForm/CreateItemForm.tsx";
 import {useAppDispatch} from "@/common/hooks/useAppDispatch.ts";
-import {Todolists} from "@/Todolists.tsx";
-import {createTodolistAC} from "@/model/TodolistReducer.ts";
+import {Todolists} from "@/features/todolists/ui/Todolists.tsx";
+import {createTodolistAC} from "@/features/todolists/model/TodolistReducer.ts";
 
 export const Main = () => {
 

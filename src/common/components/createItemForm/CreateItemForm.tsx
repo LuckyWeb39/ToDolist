@@ -1,8 +1,8 @@
 import {TextField} from "@mui/material";
-import './app/App.css'
 import {type ChangeEvent, type KeyboardEvent, useState} from "react";
 import IconButton from "@mui/material/IconButton";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import styles from "./CreateItemForm.module.css"
 
 
 type Props = {
@@ -37,7 +37,7 @@ export const CreateItemForm = ({createItem}: Props) => {
 
 
     return (<>
-            <div className={'item-form'}>
+            <div className={styles.itemForm}>
                 {/*<input className={error ? 'error' : ''}*/}
                 {/*       value={itemTitle}*/}
                 {/*       onChange={changeItemTitleHandler}*/}
@@ -47,7 +47,7 @@ export const CreateItemForm = ({createItem}: Props) => {
                     size='small'
                     error={!!error}
                     label="Add Task"
-                    className={error ? 'error' : ''}
+                    className={error ? styles.error : ''}
                     value={itemTitle}
                     onChange={changeItemTitleHandler}
                     onKeyDown={createItemOnEnterHandler}/>
@@ -58,7 +58,7 @@ export const CreateItemForm = ({createItem}: Props) => {
                     <AddBoxIcon/>
                 </IconButton>
             </div>
-            {error && <div className={'error-message'}>{error}</div>}
+            {error && <div className={styles.errorMessage}>{error}</div>}
 
         </>
     );

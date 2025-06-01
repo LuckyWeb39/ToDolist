@@ -1,5 +1,5 @@
 import {createTheme} from "@mui/material/styles";
-import {ThemeValue} from "@/model/appReducer.ts";
+import {ThemeValue} from "@/features/todolists/model/appReducer.ts";
 
 export const getTheme = (themeMode: ThemeValue) => {
 

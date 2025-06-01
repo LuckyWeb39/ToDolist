@@ -14,10 +14,10 @@ const initialState: Todolist[] = [
 
 export const deleteTodolistAC = createAction<{id:string}>('todolists/deleteTodolist')
 export const createTodolistAC = createAction('todolist/createTodolist', (title:string)=>{
-    return {payload: {title, todolistId: nanoid()}}
+    return {payload: {title, id: nanoid()}}
 })
-export const changeTodolistFilterAC = createAction<{todolistId: string, filter:FilterValues}>('todolists/changeFilter')
-export const changeTodolistTitleAC = createAction<{todolistId: string, title: string}>('todolists/changeTitle')
+export const changeTodolistFilterAC = createAction<{id: string, filter:FilterValues}>('todolists/changeFilter')
+export const changeTodolistTitleAC = createAction<{id: string, title: string}>('todolists/changeTitle')
 
 
 export const todolistsReducer = createReducer(initialState,builder => {
@@ -29,16 +29,16 @@ export const todolistsReducer = createReducer(initialState,builder => {
             }
         })
         .addCase(createTodolistAC, (state, action) => {
-            state.push({ id:action.payload.todolistId, title:action.payload.title, filter: 'all' })
+            state.push({ id:action.payload.id, title:action.payload.title, filter: 'all' })
         })
         .addCase(changeTodolistTitleAC, (state, action) => {
-            const index = state.findIndex(todolist => todolist.id === action.payload.todolistId)
+            const index = state.findIndex(todolist => todolist.id === action.payload.id)
             if (index !== -1) {
                 state[index].title = action.payload.title
             }
         })
         .addCase(changeTodolistFilterAC, (state, action) => {
-        const todolist = state.find(todolist => todolist.id === action.payload.todolistId)
+        const todolist = state.find(todolist => todolist.id === action.payload.id)
         if (todolist) {
             todolist.filter = action.payload.filter
         }
