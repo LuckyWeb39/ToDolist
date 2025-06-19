@@ -1,38 +1,35 @@
-import {EditableSpan} from "@/common/components/editableSpan/EditableSpan.tsx";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import {changeTodolistTitleAC, deleteTodolistAC, Todolist} from "@/features/todolists/model/TodolistReducer.ts";
-import {useAppDispatch} from "@/common/hooks/useAppDispatch.ts";
-import styles from './TodolistTitle.module.css'
+import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan"
+import { useAppDispatch } from "@/common/hooks"
+import { changeTodolistTitleAC, deleteTodolistAC, type Todolist } from "@/features/todolists/model/todolists-reducer"
+import DeleteIcon from "@mui/icons-material/Delete"
+import IconButton from "@mui/material/IconButton"
+import styles from "./TodolistTitle.module.css"
 
-type props= {
-    todolist: Todolist
+type Props = {
+  todolist: Todolist
 }
 
-export const TodolistTitle = ({todolist}:props) => {
-    const {id,title} = todolist
-    const dispatch = useAppDispatch()
+export const TodolistTitle = ({ todolist }: Props) => {
+  const { id, title } = todolist
 
-    const changeTodolistTitleHandler = (title: string) => {
-        dispatch(changeTodolistTitleAC({id, title}))
-    }
+  const dispatch = useAppDispatch()
 
-    const deleteTodolistHandler = () => {
-        dispatch(deleteTodolistAC({id}))
-    }
+  const deleteTodolist = () => {
+    dispatch(deleteTodolistAC({ id }))
+  }
 
-    return (
-        <div className={styles.container}>
-            {/*<h3>{title}</h3>*/}
-            <h2 className={styles.todolistTitle}>
-                <EditableSpan title={title} onChangeTitle={changeTodolistTitleHandler}/>
-                <IconButton aria-label={'Delete todolist'}
-                            onClick={deleteTodolistHandler}
-                            size={'small'}
-                            color={'error'}>
-                    <DeleteIcon/>
-                </IconButton>
-            </h2>
-        </div>
-    )
+  const changeTodolistTitle = (title: string) => {
+    dispatch(changeTodolistTitleAC({ id, title }))
+  }
+
+  return (
+    <div className={styles.container}>
+      <h3>
+        <EditableSpan value={title} onChange={changeTodolistTitle} />
+      </h3>
+      <IconButton onClick={deleteTodolist}>
+        <DeleteIcon />
+      </IconButton>
+    </div>
+  )
 }

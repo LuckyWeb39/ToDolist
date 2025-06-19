@@ -1,65 +1,52 @@
-import {TextField} from "@mui/material";
-import {type ChangeEvent, type KeyboardEvent, useState} from "react";
-import IconButton from "@mui/material/IconButton";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import styles from "./CreateItemForm.module.css"
-
+import { type ChangeEvent, type KeyboardEvent, useState } from "react"
+import TextField from "@mui/material/TextField"
+import AddBoxIcon from "@mui/icons-material/AddBox"
+import IconButton from "@mui/material/IconButton"
 
 type Props = {
-    createItem: (title: string) => void;
-};
+  onCreateItem: (title: string) => void
+}
 
-export const CreateItemForm = ({createItem}: Props) => {
+export const CreateItemForm = ({ onCreateItem }: Props) => {
+  const [title, setTitle] = useState("")
+  const [error, setError] = useState<string | null>(null)
 
-    const [itemTitle, setItemTitle] = useState('')
-    const [error, setError] = useState<string | null>(null)
-
-    const changeItemTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setItemTitle(event.currentTarget.value)
-        setError(null)
+  const createItemHandler = () => {
+    const trimmedTitle = title.trim()
+    if (trimmedTitle !== "") {
+      onCreateItem(trimmedTitle)
+      setTitle("")
+    } else {
+      setError("Title is required")
     }
+  }
 
-    const createItemHandler = () => {
-        const trimmedTitle = itemTitle.trim()
-        if (trimmedTitle !== '') {
-            createItem(trimmedTitle)
-            setItemTitle('')
-        } else {
-            setError('Title is required')
-        }
+  const changeTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.currentTarget.value)
+    setError(null)
+  }
+
+  const createItemOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      createItemHandler()
     }
+  }
 
-    const createItemOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            createItemHandler()
-        }
-    }
-
-
-    return (<>
-            <div className={styles.itemForm}>
-                {/*<input className={error ? 'error' : ''}*/}
-                {/*       value={itemTitle}*/}
-                {/*       onChange={changeItemTitleHandler}*/}
-                {/*       onKeyDown={createItemOnEnterHandler}/>*/}
-
-                <TextField
-                    size='small'
-                    error={!!error}
-                    label="Add Task"
-                    className={error ? styles.error : ''}
-                    value={itemTitle}
-                    onChange={changeItemTitleHandler}
-                    onKeyDown={createItemOnEnterHandler}/>
-
-                <IconButton
-                    disabled={itemTitle.trim().length === 0}
-                    onClick={createItemHandler}>
-                    <AddBoxIcon/>
-                </IconButton>
-            </div>
-            {error && <div className={styles.errorMessage}>{error}</div>}
-
-        </>
-    );
-};
+  return (
+    <div>
+      <TextField
+        label={"Enter a title"}
+        variant={"outlined"}
+        value={title}
+        size={"small"}
+        error={!!error}
+        helperText={error}
+        onChange={changeTitleHandler}
+        onKeyDown={createItemOnEnterHandler}
+      />
+      <IconButton onClick={createItemHandler} color={"primary"}>
+        <AddBoxIcon />
+      </IconButton>
+    </div>
+  )
+}

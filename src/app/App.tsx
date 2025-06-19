@@ -1,29 +1,24 @@
-import {ThemeProvider} from '@mui/material/styles'
-import {Container, CssBaseline} from "@mui/material";
-import {useAppSelector} from "../common/hooks/useAppSelector.ts";
-import {selectorApp} from "@/features/todolists/model/appSelector.ts";
-import {getTheme} from "../common/theme/theme.ts";
-import {Header} from "@/common/components/header/Header.tsx";
-import {Main} from "@/app/Main.tsx";
-
+import "./App.css"
+import { Main } from "@/app/Main"
+import { Header } from "@/common/components/Header/Header"
+import { useAppSelector } from "@/common/hooks"
+import { getTheme } from "@/common/theme"
+import CssBaseline from "@mui/material/CssBaseline"
+import { ThemeProvider } from "@mui/material/styles"
+import { selectThemeMode } from "./app-selectors"
 
 export const App = () => {
+  const themeMode = useAppSelector(selectThemeMode)
 
-    const themeMode = useAppSelector(selectorApp)
+  const theme = getTheme(themeMode)
 
-    const theme = getTheme(themeMode)
-
-    return (
-        <div>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <Container fixed>
-
-                    <Header/>
-                    <Main/>
-
-                </Container>
-            </ThemeProvider>
-        </div>
-    )
+  return (
+    <ThemeProvider theme={theme}>
+      <div className={"app"}>
+        <CssBaseline />
+        <Header />
+        <Main />
+      </div>
+    </ThemeProvider>
+  )
 }
