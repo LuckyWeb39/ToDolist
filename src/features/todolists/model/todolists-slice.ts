@@ -3,6 +3,9 @@ import {todolistsApi} from "@/features/todolists/api/todolistsApi.ts";
 import {createAppSlice} from "@/common/utils";
 import {setAppStatusAC} from "@/app/app-slice.ts";
 import {RequestStatus} from "@/common/types";
+import {ResultCode} from "@/common/enums";
+import {handleServerAppError} from "@/common/utils/handleServerAppError.ts";
+import {handleServerNetworkError} from "@/common/utils/handleServerNetworkError.ts";
 
 
 export const todolistsSlice = createAppSlice({
@@ -41,22 +44,25 @@ export const todolistsSlice = createAppSlice({
                     return action.payload.todolists.map(t => {
                         return {...t, filter: 'all', entityStatus: 'idle'}
                     })
-                },
-                rejected: (_state, action) => {
-                    alert(action.payload)
                 }
             }
         ),
+
         createTodolistTC: create.asyncThunk(
             async (title: string, thunkAPI) => {
                 try {
                     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
                     const res = await todolistsApi.createTodolist(title)
-                    thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
-                    return res.data.data.item
+                    if (res.data.resultCode === ResultCode.Success){
+                        thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
+                        return res.data.data.item
+                    } else {
+                        handleServerAppError(res.data, thunkAPI.dispatch)
+                        return thunkAPI.rejectWithValue(null)
+                    }
                 } catch (err) {
-                    thunkAPI.dispatch(setAppStatusAC({ status: 'failed' }))
-                    return thunkAPI.rejectWithValue(err)
+                    handleServerNetworkError(err, thunkAPI.dispatch)
+                    return thunkAPI.rejectWithValue(null)
                 }
             },
             {
@@ -69,9 +75,6 @@ export const todolistsSlice = createAppSlice({
                         order: action.payload.order,
                         entityStatus: 'idle',
                     })
-                },
-                rejected: (_state, action) => {
-                    alert(action.payload)
                 }
             }
         ),
@@ -80,12 +83,19 @@ export const todolistsSlice = createAppSlice({
                 try {
                     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
                     thunkAPI.dispatch(changeTodolistStatusAC({id: payload.id, entityStatus: 'loading'}))
-                    await todolistsApi.deleteTodolist(payload.id)
-                    thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
-                    return payload
+                    const res = await todolistsApi.deleteTodolist(payload.id)
+                    if (res.data.resultCode === ResultCode.Success){
+                        thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
+                        return payload
+                    } else {
+                        thunkAPI.dispatch(changeTodolistStatusAC({id: payload.id, entityStatus: 'failed'}))
+                        handleServerAppError(res.data, thunkAPI.dispatch)
+                        return thunkAPI.rejectWithValue(null)
+                    }
                 } catch (err) {
-                    thunkAPI.dispatch(setAppStatusAC({ status: 'failed' }))
-                    return thunkAPI.rejectWithValue(err)
+                    thunkAPI.dispatch(changeTodolistStatusAC({id: payload.id, entityStatus: 'failed'}))
+                    handleServerNetworkError(err, thunkAPI.dispatch)
+                    return thunkAPI.rejectWithValue(null)
                 }
             }, {
                 fulfilled: (state, action) => {
@@ -93,9 +103,6 @@ export const todolistsSlice = createAppSlice({
                     if (index !== -1) {
                         state.splice(index, 1)
                     }
-                },
-                rejected: (_state, action) => {
-                    alert(action.payload)
                 }
             }
         ),
@@ -116,9 +123,6 @@ export const todolistsSlice = createAppSlice({
                     if (t) {
                         t.title = action.payload.title
                     }
-                },
-                rejected: (_state, action)=>{
-                    alert(action.payload)
                 }
             }
         )

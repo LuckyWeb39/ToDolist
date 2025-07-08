@@ -1,5 +1,5 @@
 import {beforeEach, expect, test} from "vitest"
-import {createTaskTC, deleteTaskTC, tasksReducer, type TasksState,} from "../tasks-slice.ts"
+import {createTaskTC, deleteTaskTC, tasksReducer, type TasksState, updateTaskTC,} from "../tasks-slice.ts"
 import {TaskPriority, TaskStatus} from "@/common/enums";
 import {DomainTask} from "@/features/todolists/api/tasksApi.types.ts";
 import {createTodolistTC, deleteTodolistTC} from "@/features/todolists/model/todolists-slice.ts";
@@ -143,36 +143,31 @@ test("correct task should be created at correct array", () => {
   expect(endState.todolistId2[0].status).toBe(TaskStatus.New)
 })
 
-// test("correct task should change its status", () => {
-//   const endState = tasksReducer(
-//       startState,
-//       updateTaskTC.fulfilled(
-//           {
-//             todolistId: "todolistId2",
-//             taskId: "2",
-//             domainModel: { status: TaskStatus.New } // Изменяем статус
-//           },
-//           'requestId',
-//           {
-//             todolistId: "todolistId2",
-//             taskId: "2",
-//             domainModel: { status: TaskStatus.New }
-//           }
-//       )
-//   )
-//   expect(endState.todolistId2[1].status).toBe(TaskStatus.New)
-//   expect(endState.todolistId1[1].status).toBe(TaskStatus.Completed)
-// })
-//
-// test("correct task should change its title", () => {
-//   const endState = tasksReducer(
-//     startState,
-//     changeTaskTitleAC({ todolistId: "todolistId2", taskId: "2", title: "coffee" }),
-//   )
-//
-//   expect(endState.todolistId2[1].title).toBe("coffee")
-//   expect(endState.todolistId1[1].title).toBe("JS")
-// })
+test("correct task should change its status", () => {
+  const task = {
+    id: "2",
+    title: "milk",
+    status: TaskStatus.New,
+    description: "",
+    deadline: "",
+    addedDate: "",
+    startDate: "",
+    priority: TaskPriority.Low,
+    order: 0,
+    todoListId: "todolistId2",
+  }
+  const endState = tasksReducer(
+      startState,
+      updateTaskTC.fulfilled({ task }, "requestId", {
+        todolistId: "todolistId2",
+        taskId: "2",
+        domainModel: { status: TaskStatus.New },
+      }),
+  )
+
+  expect(endState.todolistId2[1].status).toBe(TaskStatus.New)
+  expect(endState.todolistId1[1].status).toBe(TaskStatus.Completed)
+})
 
 test("array should be created for new todolist", () => {
   const title = "New todolist"
