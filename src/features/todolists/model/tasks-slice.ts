@@ -4,6 +4,9 @@ import {tasksApi} from "@/features/todolists/api/tasksApi.ts";
 import {DomainTask, UpdateTaskModel} from "@/features/todolists/api/tasksApi.types.ts";
 import {RootState} from "@/app/store.ts";
 import {setAppStatusAC} from "@/app/app-slice.ts";
+import {ResultCode} from "@/common/enums";
+import {handleServerNetworkError} from "@/common/utils/handleServerNetworkError.ts";
+import {handleServerAppError} from "@/common/utils/handleServerAppError.ts";
 
 
 export const tasksSlice = createAppSlice({
@@ -34,18 +37,24 @@ export const tasksSlice = createAppSlice({
                 try {
                     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
                     const res = await tasksApi.createTask(arg)
-                    thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
-                    return {todolistId: arg.todolistId, task: res.data.data.item}
+                    if (res.data.resultCode === ResultCode.Success){
+                        thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
+                        return {todolistId: arg.todolistId, task: res.data.data.item}
+                    } else {
+                        handleServerAppError(res.data, thunkAPI.dispatch)
+                    }
+                    return thunkAPI.rejectWithValue(null)
+
                 } catch (err) {
-                    thunkAPI.dispatch(setAppStatusAC({ status: 'failed' }))
-                    return thunkAPI.rejectWithValue(err)
+                    handleServerNetworkError(err, thunkAPI.dispatch)
+                    return thunkAPI.rejectWithValue(null)
                 }
             }, {
                 fulfilled: (state, action) => {
                     state[action.payload.todolistId].unshift(action.payload.task)
                 },
                 rejected: (_state, action) => {
-                    alert(action.payload)
+                    action.payload
                 }
             }
         ),
@@ -88,16 +97,21 @@ export const tasksSlice = createAppSlice({
                         try{
                             thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
                             const res = await tasksApi.updateTask({todolistId: arg.todolistId, taskId: arg.taskId, model})
-                            thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
-                            return {task: res.data.data.item}
+                            if(res.data.resultCode === ResultCode.Success){
+                                thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
+                                return {task: res.data.data.item}
+                            } else {
+                                handleServerAppError(res.data, thunkAPI.dispatch)
+                            }
+                            return thunkAPI.rejectWithValue(null)
+
                         } catch (err){
-                            thunkAPI.dispatch(setAppStatusAC({ status: 'failed' }))
-                            return thunkAPI.rejectWithValue(err)
+                            handleServerNetworkError(err, thunkAPI.dispatch)
+                            return thunkAPI.rejectWithValue(null)
                         }
 
             },
             { fulfilled: (state, action) => {
-                debugger
                 const task = state[action.payload.task.todoListId].find(t=>t.id===action.payload.task.id)
                     if(task){
                         task.status = action.payload.task.status
