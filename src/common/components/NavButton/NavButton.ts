@@ -1,8 +1,12 @@
 import { styled } from "@mui/material/styles"
 import Button from "@mui/material/Button"
+import * as React from "react";
+import {LinkProps} from "react-router";
 
 type Props = {
   background?: string
+  component?: React.ElementType
+  to?: LinkProps['to']
 }
 
 export const NavButton = styled(Button)<Props>(({ background, theme }) => ({
