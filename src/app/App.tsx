@@ -35,7 +35,7 @@ export const App = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <div className={"app"}>
+            <div className={styles.app}>
                 <CssBaseline/>
                 <Header/>
                 <Routing/>

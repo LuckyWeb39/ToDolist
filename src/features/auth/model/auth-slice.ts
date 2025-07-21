@@ -6,6 +6,7 @@ import {authApi} from "@/features/auth/api/authApi.ts";
 import {ResultCode} from "@/common/enums";
 import {handleServerAppError} from "@/common/utils/handleServerAppError.ts";
 import {AUTH_TOKEN} from "@/common/constants";
+import {clearDataAC} from "@/common/common";
 
 export const authSlice = createAppSlice({
     name: 'auth',
@@ -47,6 +48,7 @@ export const authSlice = createAppSlice({
                 if (res.data.resultCode === ResultCode.Success){
                     thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
                     localStorage.removeItem(AUTH_TOKEN)
+                    thunkAPI.dispatch(clearDataAC())
                     return {isLoggedIn: false}
                 } else {
                     handleServerAppError(res.data, thunkAPI.dispatch)

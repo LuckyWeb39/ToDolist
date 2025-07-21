@@ -13,6 +13,7 @@ import {ResultCode} from "@/common/enums";
 import {handleServerNetworkError} from "@/common/utils/handleServerNetworkError.ts";
 import {handleServerAppError} from "@/common/utils/handleServerAppError.ts";
 import {defaultResponseSchema} from "@/common/types";
+import {clearDataAC} from "@/common/common";
 
 
 export const tasksSlice = createAppSlice({
@@ -150,6 +151,9 @@ export const tasksSlice = createAppSlice({
             })
             .addCase(deleteTodolistTC.fulfilled, (state, action) => {
                 delete state[action.payload.id]
+            })
+            .addCase(clearDataAC, () => {
+                return {}
             })
     },
     selectors:

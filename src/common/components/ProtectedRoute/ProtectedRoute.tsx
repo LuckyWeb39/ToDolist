@@ -1,17 +1,35 @@
-import {Navigate, Outlet} from "react-router";
-import {Path} from "@/common/routing";
-import {ReactNode} from "react";
+import { Path } from "@/common/routing"
+import { Navigate, Outlet } from "react-router"
 
 type Props = {
-    children?: ReactNode
-    isAllowed: boolean;
-    redirectPath?: string;
+    isAllowed: boolean
+    redirectPath?: string
 }
 
-export const ProtectedRoute = ({children, isAllowed, redirectPath = Path.Login}: Props) => {
-
-    if (isAllowed) {
-        return <Navigate to={redirectPath}/>
-    }
-    return children ? children : <Outlet/>
+export const ProtectedRoute = ({ isAllowed, redirectPath = Path.Main }: Props) => {
+    return isAllowed ? <Outlet /> : <Navigate to={redirectPath} replace />
 }
+
+
+
+
+
+
+
+// import {Navigate, Outlet} from "react-router";
+// import {Path} from "@/common/routing";
+// import {ReactNode} from "react";
+//
+// type Props = {
+//     children?: ReactNode
+//     isAllowed: boolean;
+//     redirectPath?: string;
+// }
+//
+// export const ProtectedRoute = ({children, isAllowed, redirectPath = Path.Main}: Props) => {
+// debugger
+//     if (isAllowed) {
+//         return <Navigate to={redirectPath}/>
+//     }
+//     return children ? children : <Outlet/>
+// }

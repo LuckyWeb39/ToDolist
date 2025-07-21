@@ -6,6 +6,7 @@ import {defaultResponseSchema, RequestStatus} from "@/common/types";
 import {ResultCode} from "@/common/enums";
 import {handleServerAppError} from "@/common/utils/handleServerAppError.ts";
 import {handleServerNetworkError} from "@/common/utils/handleServerNetworkError.ts";
+import {clearDataAC} from "@/common/common";
 
 
 export const todolistsSlice = createAppSlice({
@@ -80,6 +81,7 @@ export const todolistsSlice = createAppSlice({
                         order: action.payload.order,
                         entityStatus: 'idle',
                     })
+
                 }
             }
         ),
@@ -138,6 +140,13 @@ export const todolistsSlice = createAppSlice({
             }
         )
     }),
+    extraReducers: builder => {
+        builder.addCase(clearDataAC, () => {
+            return []
+        })
+    }
+    ,
+
     selectors: {
         selectTodolists: state => state
     }
