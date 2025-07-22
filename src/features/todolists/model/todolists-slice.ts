@@ -1,5 +1,5 @@
 import {createTodolistResponseSchema, Todolist, todolistSchema} from "@/features/todolists/api/todolistsApi.types.ts";
-import {todolistsApi} from "@/features/todolists/api/todolistsApi.ts";
+import {_todolistsApi} from "@/features/todolists/api/todolistsApi.ts";
 import {createAppSlice} from "@/common/utils";
 import {setAppStatusAC} from "@/app/app-slice.ts";
 import {defaultResponseSchema, RequestStatus} from "@/common/types";
@@ -33,7 +33,7 @@ export const todolistsSlice = createAppSlice({
             async (_arg, thunkAPI) => {
                 try {
                     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
-                    const res = await todolistsApi.getTodolists()
+                    const res = await _todolistsApi.getTodolists()
                     todolistSchema.array().parse(res.data) // 💎
                     thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
                     return {todolists: res.data}
@@ -54,7 +54,7 @@ export const todolistsSlice = createAppSlice({
             async (title: string, thunkAPI) => {
                 try {
                     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
-                    const res = await todolistsApi.createTodolist(title)
+                    const res = await _todolistsApi.createTodolist(title)
 
                     createTodolistResponseSchema.parse(res.data) // 💎
 
@@ -90,7 +90,7 @@ export const todolistsSlice = createAppSlice({
                 try {
                     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
                     thunkAPI.dispatch(changeTodolistStatusAC({id: payload.id, entityStatus: 'loading'}))
-                    const res = await todolistsApi.deleteTodolist(payload.id)
+                    const res = await _todolistsApi.deleteTodolist(payload.id)
 
                     defaultResponseSchema.parse(res.data) //💎
 
@@ -120,7 +120,7 @@ export const todolistsSlice = createAppSlice({
             async (payload: { title: string, id: string }, thunkAPI) => {
                 try {
                     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
-                    const res = await todolistsApi.changeTodolistTitle(payload)
+                    const res = await _todolistsApi.changeTodolistTitle(payload)
 
                     defaultResponseSchema.parse(res.data) //💎
 
