@@ -16,6 +16,7 @@ export const todolistsSlice = createAppSlice({
 
     reducers: create => ({
         changeTodolistFilterAC: create.reducer<{ id: string; filter: FilterValues }>((state, action) => {
+            debugger
             const todolist = state.find((todolist) => todolist.id === action.payload.id)
             if (todolist) {
                 todolist.filter = action.payload.filter

@@ -1,6 +1,6 @@
 import {createTodolistTC, deleteTodolistTC} from "./todolists-slice.ts"
 import {createAppSlice} from "@/common/utils";
-import {tasksApi} from "@/features/todolists/api/tasksApi.ts";
+import {_tasksApi} from "@/features/todolists/api/tasksApi.ts";
 import {
     DomainTask,
     getTasksResponseSchema,
@@ -25,7 +25,7 @@ export const tasksSlice = createAppSlice({
             async (todolistId: string, thunkAPI) => {
                 try {
                     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
-                    const res = await tasksApi.getTasks(todolistId)
+                    const res = await _tasksApi.getTasks(todolistId)
                     getTasksResponseSchema.parse(res.data) // 💎
                     thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
                     return {todolistId, tasks: res.data.items}
@@ -46,7 +46,7 @@ export const tasksSlice = createAppSlice({
             async (arg: { todolistId: string, title: string }, thunkAPI) => {
                 try {
                     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
-                    const res = await tasksApi.createTask(arg)
+                    const res = await _tasksApi.createTask(arg)
 
                     taskOperationsResponseSchema.parse(res.data) // 💎
 
@@ -75,7 +75,7 @@ export const tasksSlice = createAppSlice({
             async (arg: { todolistId: string, taskId: string }, thunkAPI) => {
                 try {
                     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
-                    const res = await tasksApi.deleteTask(arg)
+                    const res = await _tasksApi.deleteTask(arg)
 
                     defaultResponseSchema.parse(res.data) // 💎
 
@@ -116,7 +116,7 @@ export const tasksSlice = createAppSlice({
                         }
                         try{
                             thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
-                            const res = await tasksApi.updateTask({todolistId: arg.todolistId, taskId: arg.taskId, model})
+                            const res = await _tasksApi.updateTask({todolistId: arg.todolistId, taskId: arg.taskId, model})
 
                             taskOperationsResponseSchema.parse(res.data) // 💎
 
