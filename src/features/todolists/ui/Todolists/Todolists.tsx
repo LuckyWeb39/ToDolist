@@ -2,33 +2,30 @@ import {TodolistItem} from "./TodolistItem/TodolistItem"
 import Paper from "@mui/material/Paper"
 import {Grid} from "@mui/material";
 import {useGetTodolistsQuery} from "@/features/todolists/api/todolistsApi.ts";
+import {containerSx} from "@/common/styles";
+import Box from "@mui/material/Box";
+import {TodolistSkeleton} from "@/features/todolists/ui/Todolists/TodolistSkeleton/TodolistSkeleton.tsx";
+
+
 
 
 export const Todolists = () => {
-    // const [skip, setSkip] = useState(true)
-    // const {data: todolists} = useGetTodolistsQuery(undefined, {skip})
-    //
-    // const fetchTodolists = () => {
-    //   setSkip(false)
-    // }
-    // Вариант Conditional Fetch(запроса от условия) с использованием встроенного параметра "skip"
-    //
 
-
-    // const [trigger, {data: todolists}] = useLazyGetTodolistsQuery();
-    //
-    // const fetchTodolistsHandler = () => {
-    //     trigger()
-    // }
-    // Вариант Conditional Fetch(запроса от условия)
-    // с использованием вызова запроса по вызову "функции триггера"
-   const {data: todolists} = useGetTodolistsQuery()
+   const {data: todolists, isLoading} = useGetTodolistsQuery()
+    if(isLoading) {
+        return (
+            <Box sx={containerSx} style ={{gap: "32px"}}>
+                {Array(3)
+                .fill(null)
+                .map((_, id) => (
+                    <TodolistSkeleton key = {id}/>
+                ))}
+            </Box>
+        )
+    }
 
     return (
         <>
-            {/*<div>*/}
-            {/*    <button onClick={fetchTodolistsHandler}>Download todolists</button>*/}
-            {/*</div>*/}
             {todolists?.map((todolist) => (
                 <Grid key={todolist.id}>
                     <Paper sx={{p: "0 20px 20px 20px"}}>
