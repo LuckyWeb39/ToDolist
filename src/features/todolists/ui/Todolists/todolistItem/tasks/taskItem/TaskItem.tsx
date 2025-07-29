@@ -7,8 +7,9 @@ import type {ChangeEvent} from "react"
 import {getListItemSx} from "./TaskItem.styles"
 import {TaskStatus} from "@/common/enums";
 import {DomainTask, UpdateTaskModel} from "@/features/todolists/api/tasksApi.types.ts";
-import {DomainTodolists} from "@/features/todolists/model/todolists-slice.ts";
+
 import {useDeleteTaskMutation, useUpdateTaskMutation} from "@/features/todolists/api/tasksApi.ts";
+import {DomainTodolists} from "@/features/todolists/lib/types";
 
 type Props = {
   task: DomainTask

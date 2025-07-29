@@ -1,8 +1,9 @@
 import {instance} from "@/common/instance"
 import {BaseResponse, DefaultResponse} from "@/common/types"
 import type {createTodolistResponse, Todolist} from "./todolistsApi.types"
-import {DomainTodolists} from "@/features/todolists/model/todolists-slice.ts";
+
 import {baseApi} from "@/app/baseApi.ts";
+import {DomainTodolists} from "@/features/todolists/lib/types";
 
 export const _todolistsApi = {
   getTodolists() {
