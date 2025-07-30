@@ -1,25 +1,9 @@
-import {instance} from "@/common/instance"
-import {BaseResponse, DefaultResponse} from "@/common/types"
-import type {createTodolistResponse, Todolist} from "./todolistsApi.types"
+import {BaseResponse, defaultResponseSchema} from "@/common/types"
+import {Todolist, todolistSchema} from "./todolistsApi.types"
 
 import {baseApi} from "@/app/baseApi.ts";
 import {DomainTodolists} from "@/features/todolists/lib/types";
 
-export const _todolistsApi = {
-  getTodolists() {
-    return instance.get<Todolist[]>("/todo-lists")
-  },
-  changeTodolistTitle(payload: { id: string; title: string }) {
-    const { id, title } = payload
-    return instance.put<DefaultResponse>(`/todo-lists/${id}`, { title })
-  },
-  createTodolist(title: string) {
-    return instance.post<createTodolistResponse>("/todo-lists", { title })
-  },
-  deleteTodolist(id: string) {
-    return instance.delete<DefaultResponse>(`/todo-lists/${id}`)
-  },
-}
 
 export const todolistsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -28,6 +12,7 @@ export const todolistsApi = baseApi.injectEndpoints({
       query: ()=> 'todo-lists',
       transformResponse: (todolists: Todolist[]): DomainTodolists[] =>
           todolists.map((todolist) => ({...todolist, filter: 'all', entityStatus: 'idle'})),
+      extraOptions: {dataSchema: todolistSchema.array()},
       providesTags: ['Todolist'],
     }),
 
@@ -37,6 +22,7 @@ export const todolistsApi = baseApi.injectEndpoints({
         method: 'POST',
         body: {title}
       }),
+      extraOptions: {dataSchema: defaultResponseSchema},
       invalidatesTags:['Todolist'],
     }),
 
@@ -45,6 +31,7 @@ export const todolistsApi = baseApi.injectEndpoints({
         url: `todo-lists/${todolistId}`,
         method: 'DELETE',
       }),
+      extraOptions: {dataSchema: defaultResponseSchema},
       invalidatesTags:['Todolist'],
     }),
 
@@ -54,6 +41,7 @@ export const todolistsApi = baseApi.injectEndpoints({
         method: 'PUT',
         body: {title},
       }),
+      extraOptions: {dataSchema: defaultResponseSchema},
       invalidatesTags:['Todolist'],
     }),
 

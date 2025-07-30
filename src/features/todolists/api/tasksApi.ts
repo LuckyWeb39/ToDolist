@@ -1,25 +1,13 @@
-import {instance} from "@/common/instance"
-import {DefaultResponse} from "@/common/types"
-import type {GetTasksResponse, TaskOperationsResponse, UpdateTaskModel} from "./tasksApi.types"
+import {DefaultResponse, defaultResponseSchema} from "@/common/types"
+import {
+  GetTasksResponse,
+  getTasksResponseSchema,
+  TaskOperationsResponse,
+  taskOperationsResponseSchema,
+  UpdateTaskModel
+} from "./tasksApi.types"
 import {baseApi} from "@/app/baseApi.ts";
 
-export const _tasksApi = {
-  getTasks(todolistId: string) {
-    return instance.get<GetTasksResponse>(`/todo-lists/${todolistId}/tasks`)
-  },
-  createTask(payload: { todolistId: string; title: string }) {
-    const { todolistId, title } = payload
-    return instance.post<TaskOperationsResponse>(`/todo-lists/${todolistId}/tasks`, { title })
-  },
-  updateTask(payload: { todolistId: string; taskId: string; model: UpdateTaskModel }) {
-    const { todolistId, taskId, model } = payload
-    return instance.put<TaskOperationsResponse>(`/todo-lists/${todolistId}/tasks/${taskId}`, model)
-  },
-  deleteTask(payload: { todolistId: string; taskId: string }) {
-    const { todolistId, taskId } = payload
-    return instance.delete<DefaultResponse>(`/todo-lists/${todolistId}/tasks/${taskId}`)
-  },
-}
 
 export const taskApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -27,6 +15,7 @@ export const taskApi = baseApi.injectEndpoints({
       query: (todolistId) => ({
         url: `todo-lists/${todolistId}/tasks`,
       }),
+      extraOptions: {dataSchema: getTasksResponseSchema },
       providesTags: ['Task']
     }),
 
@@ -36,6 +25,7 @@ export const taskApi = baseApi.injectEndpoints({
         method: 'POST',
         body:{title}
       }),
+      extraOptions: {dataSchema: taskOperationsResponseSchema },
       invalidatesTags: ['Task']
     }),
 
@@ -45,6 +35,7 @@ export const taskApi = baseApi.injectEndpoints({
         method: 'PUT',
         body: model
       }),
+      extraOptions: {dataSchema: taskOperationsResponseSchema },
       invalidatesTags: ['Task']
     }),
 
@@ -53,6 +44,7 @@ export const taskApi = baseApi.injectEndpoints({
         url: `todo-lists/${todolistId}/tasks/${taskId}`,
         method: 'DELETE',
       }),
+      extraOptions: {dataSchema: defaultResponseSchema },
       invalidatesTags: ['Task']
     })
 
