@@ -18,7 +18,8 @@ import {Path} from "@/common/routing";
 import {Navigate} from "react-router";
 import {ResultCode} from "@/common/enums";
 import {AUTH_TOKEN} from "@/common/constants";
-import {useLoginMutation} from "@/features/auth/api/authApi.ts";
+import {useCaptchaQuery, useLoginMutation} from "@/features/auth/api/authApi.ts";
+import {useState} from "react";
 
 
 export const Login = () => {
@@ -28,6 +29,9 @@ export const Login = () => {
     const theme = getTheme(themeMode)
 
     const [login] = useLoginMutation()
+    const {data} = useCaptchaQuery()
+
+    const [captcha, setCaptcha] = useState(false)
 
     const {
         register,
@@ -36,21 +40,26 @@ export const Login = () => {
         control,
         formState: {errors},
     } = useForm<LoginInputs>({
-        resolver: zodResolver(loginSchema),
-        defaultValues: {email: '', password: '', rememberMe: false}
+            resolver: zodResolver(loginSchema),
+            defaultValues: {email: '', password: '', rememberMe: false}
         }
     )
 
     const onSubmit: SubmitHandler<LoginInputs> = data => {
         login(data).then(res => {
             if (res.data?.resultCode === ResultCode.Success) {
-                dispatch(setIsLoggedInAC({ isLoggedIn: true }))
+                setCaptcha(false)
+                dispatch(setIsLoggedInAC({isLoggedIn: true}))
                 localStorage.setItem(AUTH_TOKEN, res.data.data.token)
                 reset()
+            }
+            if (res.data?.resultCode === ResultCode.CaptchaError) {
+                setCaptcha(true)
             }
         })
         reset()
     }
+
 
     if (isLoggedIn) {
         return <Navigate to={Path.Main}/>
@@ -94,6 +103,7 @@ export const Login = () => {
                                    {...register('password')}
                         />
                         {errors.password && <span className={styles.errorMessage}>{errors.password.message}</span>}
+
                         <FormControlLabel
                             label="Remember me"
                             control={
@@ -104,6 +114,11 @@ export const Login = () => {
                                 />
                             }
                         />
+
+                        {captcha && <img src={data?.url} alt="captha"/>}
+                        {captcha && <TextField type="text" label="Symbols from image"
+                                               margin="normal" {...register('captcha')}/>}
+
                         <Button type="submit" variant="contained" color="primary">
                             Login
                         </Button>

@@ -12,45 +12,6 @@ import styles from "./App.module.css";
 import {useMeQuery} from "@/features/auth/api/authApi.ts";
 import {ResultCode} from "@/common/enums";
 
-//
-// export const App = () => {
-//     const themeMode = useAppSelector(selectThemeMode)
-//     const dispatch = useAppDispatch();
-//     const theme = getTheme(themeMode)
-//     const [isInitialized, setIsInitialized] = useState(false)
-//
-//     const {data, isLoading} = useMeQuery()
-//
-//     useEffect(() => {
-//         if (isLoading) return
-//         setIsInitialized(true)
-//         console.log(data)
-//         if (data?.resultCode === ResultCode.Success) {
-//             dispatch(setIsLoggedInAC({isLoggedIn: true}));
-//         }
-//     }, [isLoading]);
-//
-//
-//     if (!isInitialized) {
-//         return (
-//             <div className={styles.circularProgressContainer}>
-//                 <CircularProgress size={150} thickness={3} />
-//             </div>
-//         )
-//     }
-//
-//     return (
-//         <ThemeProvider theme={theme}>
-//             <div className={styles.app}>
-//                 <CssBaseline/>
-//                 <Header/>
-//                 <Routing/>
-//                 <ErrorSnackbar/>
-//             </div>
-//         </ThemeProvider>
-//     )
-// }
-
 
 export const App = () => {
     const [isInitialized, setIsInitialized] = useState(false)
