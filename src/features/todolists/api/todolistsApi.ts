@@ -31,6 +31,21 @@ export const todolistsApi = baseApi.injectEndpoints({
         url: `todo-lists/${todolistId}`,
         method: 'DELETE',
       }),
+      async onQueryStarted(id: string, api){
+        const patchRes = api.dispatch(
+            todolistsApi.util.updateQueryData('getTodolists', undefined, state => {
+              const index = state.findIndex(t=> t.id === id)
+              if (index !== -1){
+                state.splice(index, 1)
+              }
+            })
+        )
+        try {
+          await api.queryFulfilled
+        } catch {
+          patchRes.undo()
+        }
+      },
       extraOptions: {dataSchema: defaultResponseSchema},
       invalidatesTags:['Todolist'],
     }),
